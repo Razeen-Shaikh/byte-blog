@@ -1,26 +1,235 @@
 @import "tailwindcss";
 
+/* Light: cool paper + slate-teal accent (no purple-on-white, no cream/terracotta) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: 210 20% 98%;
+  --foreground: 215 28% 12%;
+  --card: 0 0% 100%;
+  --card-foreground: 215 28% 12%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 215 28% 12%;
+  --primary: 200 65% 32%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 16% 93%;
+  --secondary-foreground: 215 25% 20%;
+  --muted: 210 14% 94%;
+  --muted-foreground: 215 12% 42%;
+  --accent: 210 18% 92%;
+  --accent-foreground: 215 28% 14%;
+  --destructive: 0 72% 48%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 214 16% 88%;
+  --input: 214 16% 88%;
+  --ring: 200 65% 32%;
+  --radius: 0.625rem;
+}
+
+.dark {
+  --background: 220 18% 7%;
+  --foreground: 210 20% 94%;
+  --card: 220 16% 10%;
+  --card-foreground: 210 20% 94%;
+  --popover: 220 16% 10%;
+  --popover-foreground: 210 20% 94%;
+  --primary: 198 70% 52%;
+  --primary-foreground: 220 20% 8%;
+  --secondary: 220 14% 16%;
+  --secondary-foreground: 210 18% 90%;
+  --muted: 220 12% 15%;
+  --muted-foreground: 215 10% 62%;
+  --accent: 220 14% 18%;
+  --accent-foreground: 210 20% 94%;
+  --destructive: 0 62% 50%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 220 12% 20%;
+  --input: 220 12% 20%;
+  --ring: 198 70% 52%;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-newsreader), ui-serif, Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --font-serif: var(--font-newsreader), ui-serif, Georgia, serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight text-balance;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@utility container {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 72rem;
+  padding-inline: 1.25rem;
+
+  @media (width >= 640px) {
+    padding-inline: 1.5rem;
+  }
+}
+
+@utility font-display {
+  font-family: var(--font-display);
+}
+
+/* Long-form article content (alias: .article-body kept for existing pages) */
+.article-prose,
+.article-body {
+  @apply text-[1.0625rem] leading-[1.75] text-foreground/90;
+
+  & > * + * {
+    margin-top: 1.25em;
+  }
+
+  h2 {
+    @apply mt-12 scroll-mt-24 font-display text-[1.75rem] font-semibold leading-tight text-foreground;
+  }
+
+  h3 {
+    @apply mt-8 scroll-mt-24 font-display text-[1.375rem] font-semibold leading-snug text-foreground;
+  }
+
+  h4 {
+    @apply mt-6 font-sans text-base font-semibold uppercase tracking-wide text-muted-foreground;
+  }
+
+  p {
+    @apply text-pretty;
+  }
+
+  a {
+    @apply font-medium text-primary underline decoration-primary/30 underline-offset-4 transition-colors hover:decoration-primary;
+  }
+
+  ul {
+    @apply list-disc space-y-2 pl-6 marker:text-primary/70;
+  }
+
+  ol {
+    @apply list-decimal space-y-2 pl-6 marker:font-medium marker:text-muted-foreground;
+  }
+
+  li > ul,
+  li > ol {
+    margin-top: 0.5em;
+  }
+
+  blockquote {
+    @apply border-l-2 border-primary/50 bg-muted/40 py-1 pl-5 font-display text-lg italic text-foreground/85;
+  }
+
+  hr {
+    @apply my-10 border-border;
+  }
+
+  img {
+    @apply my-8 w-full rounded-lg border border-border/60 shadow-sm;
+  }
+
+  figure {
+    @apply my-8;
+  }
+
+  figcaption {
+    @apply mt-2 text-center text-sm text-muted-foreground;
+  }
+
+  table {
+    @apply my-8 w-full border-collapse text-sm;
+  }
+
+  th {
+    @apply border border-border bg-muted/60 px-3 py-2 text-left font-semibold;
+  }
+
+  td {
+    @apply border border-border px-3 py-2;
+  }
+
+  :not(pre) > code {
+    @apply rounded bg-muted px-1.5 py-0.5 font-mono text-[0.9em] text-foreground;
+  }
+
+  pre {
+    @apply my-8 overflow-x-auto rounded-lg border border-border bg-[hsl(220_16%_11%)] p-4 text-[0.875rem] leading-relaxed text-[hsl(210_20%_92%)];
+  }
+
+  pre code {
+    @apply bg-transparent p-0 font-mono text-inherit;
+  }
+
+  .hljs-comment,
+  .hljs-quote {
+    color: hsl(215 12% 55%);
+  }
+
+  .hljs-keyword,
+  .hljs-selector-tag {
+    color: hsl(198 70% 62%);
+  }
+
+  .hljs-string,
+  .hljs-addition {
+    color: hsl(152 45% 58%);
+  }
+
+  .hljs-number,
+  .hljs-literal {
+    color: hsl(32 75% 62%);
+  }
+
+  .hljs-title,
+  .hljs-section {
+    color: hsl(210 25% 78%);
+  }
+}
+
+.dark .article-prose pre,
+.dark .article-body pre {
+  @apply border-border bg-[hsl(220_18%_6%)];
+}
+
+[data-sonner-toaster] {
+  font-family: var(--font-sans);
 }
